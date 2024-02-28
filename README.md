@@ -1,9 +1,9 @@
-# <img src="img/logo.png" style="vertical-align: -10px;" :height="66px" width="66px"> SongComposer
+# <img src="img/logo.png" style="vertical-align: -10px;" :height="40px" width="40px"> SongComposer
 This repository is the official implementation of SongComposer.
 
 <!-- **[SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation](https://arxiv.org/abs/2402.17645)**
 </br> -->
-<p align="center" style="font-size: 1.3em; margin-top: -1em"> <a href="https://arxiv.org/abs/2402.17645"><b>SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation</b></a></p>
+<p align="center" style="font-size: 1.5em; margin-top: -1em"> <a href="https://arxiv.org/abs/2402.17645"><b>SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation</b></a></p>
 <p align="center" style="font-size: 1.1em; margin-top: -1em">
 <a href="https://mark12ding.github.io/">Shuangrui Ding<sup>*1</sup></a>,  
 <a href="https://scholar.google.com/citations?user=iELd-Q0AAAAJ">Zihan Liu<sup>*2,3</sup></a>,  
@@ -23,8 +23,7 @@ This repository is the official implementation of SongComposer.
 <a href="https://pjlab-songcomposer.github.io"><img src="https://img.shields.io/badge/Demo-yellow"></a>
 </p>
 
-<img align="center" src="img/framework
-.png" style="  display: block;
+<img align="center" src="img/framework.png" style="  display: block;
   margin-left: auto;
   margin-right: auto;
   width: 100%;" />
@@ -69,16 +68,16 @@ For more details, refer to the [Demo Page](https://pjlab-songcomposer.github.io)
         <tbody>
         <tr>
             <th scope="row">Wav</th>
-            <td><audio controls="" ><source src="resources/showcase/l2m/zh/1/gt.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/l2m/zh/1/gpt3.5.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/l2m/zh/1/gpt4.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/l2m/zh/1/ours.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/l2m/zh/1/gt.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/l2m/zh/1/gpt3.5.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/l2m/zh/1/gpt4.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/l2m/zh/1/ours.wav" type="audio/wav"></audio></td>
         </tr>
     </tbody>
     </table>
 
 ### Melody-to-Lyric
-   **Given melody:** <audio controls="" ><source src="resources/showcase/m2l/en/2/melody.wav" type="audio/wav"></audio>
+   **Given melody:** <audio controls="" ><source src="showcase/m2l/en/2/melody.wav" type="audio/wav"></audio>
     <table style='width: 100%;'>
         <thead>
         <tr>
@@ -92,10 +91,10 @@ For more details, refer to the [Demo Page](https://pjlab-songcomposer.github.io)
         <tbody>
            <tr>
             <th scope="row">Wav</th>
-            <td><audio controls="" ><source src="resources/showcase/m2l/en/2/gt.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/m2l/en/2/gpt3.5.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/m2l/en/2/gpt4.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/m2l/en/2/ours.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/m2l/en/2/gt.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/m2l/en/2/gpt3.5.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/m2l/en/2/gpt4.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/m2l/en/2/ours.wav" type="audio/wav"></audio></td>
         </tr>
         <tr>
             <th scope="row">Lyrics</th>
@@ -112,7 +111,7 @@ For more details, refer to the [Demo Page](https://pjlab-songcomposer.github.io)
     </table>
 
 ### Song Continuation
-  **Given song prompt:** <audio controls="" ><source src="resources/showcase/sc/zh/3/prompt.wav" type="audio/wav"></audio>
+  **Given song prompt:** <audio controls="" ><source src="showcase/sc/zh/3/prompt.wav" type="audio/wav"></audio>
     <table style='width: 100%;'>
         <thead>
         <tr>
@@ -126,13 +125,13 @@ For more details, refer to the [Demo Page](https://pjlab-songcomposer.github.io)
         <tbody>
          <tr>
             <th scope="row">Wav</th>
-            <td><audio controls="" ><source src="resources/showcase/sc/zh/3/gt.wav" type="audio/wav"></audio>
+            <td><audio controls="" ><source src="showcase/sc/zh/3/gt.wav" type="audio/wav"></audio>
             </td>
-            <td><audio controls="" ><source src="resources/showcase/sc/zh/3/gpt3.5.wav" type="audio/wav"></audio>
+            <td><audio controls="" ><source src="showcase/sc/zh/3/gpt3.5.wav" type="audio/wav"></audio>
             </td>
-            <td><audio controls="" ><source src="resources/showcase/sc/zh/3/gpt4.wav" type="audio/wav"></audio>
+            <td><audio controls="" ><source src="showcase/sc/zh/3/gpt4.wav" type="audio/wav"></audio>
             </td>
-            <td><audio controls="" ><source src="resources/showcase/sc/zh/3/ours.wav" type="audio/wav"></audio>
+            <td><audio controls="" ><source src="showcase/sc/zh/3/ours.wav" type="audio/wav"></audio>
             </td>
         </tr>
         <tr>
@@ -184,9 +183,9 @@ For more details, refer to the [Demo Page](https://pjlab-songcomposer.github.io)
         <tbody>
         <tr>
             <th scope="row">Wav</th>
-            <td><audio controls="" ><source src="resources/showcase/t2s/en/2/gpt3.5.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/t2s/en/2/gpt4.wav" type="audio/wav"></audio></td>
-            <td><audio controls="" ><source src="resources/showcase/t2s/en/2/ours.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/t2s/en/2/gpt3.5.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/t2s/en/2/gpt4.wav" type="audio/wav"></audio></td>
+            <td><audio controls="" ><source src="showcase/t2s/en/2/ours.wav" type="audio/wav"></audio></td>
         </tr>
         <tr>
             <th scope="row">Lyrics</th>
