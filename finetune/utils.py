@@ -149,3 +149,4 @@ def gen_midi(line, file_name):
     
     with open(file_name+'.txt', "w") as file:
         file.write(lyrics)
+    print(f'midi saved at ~/{file_name}.mid, lyrics saved at ~/{file_name}.txt')

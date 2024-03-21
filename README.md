@@ -30,22 +30,66 @@ This repository is the official implementation of SongComposer.
 
 ## 📜 News
 
+🚀 [2023/3/21] The finetune code of [SongComposer](https://github.com/pjlab-songcomposer/songcomposer/tree/main/finetune) are publicly available and the weights of [SongComposer_pretrain](https://huggingface.co/Mar2Ding/songcomposer_pretrain) and [SongComposer_sft](https://huggingface.co/Mar2Ding/songcomposer_sft) are publicly available on Hugging Face🤗.
+
 🚀 [2023/2/28] The [paper](https://arxiv.org/abs/2402.17645) and [demo page](https://pjlab-songcomposer.github.io) are released!
 
 ## 💡 Highlights
-- 🔥SongComposer composes melodies and lyrics with symbolic song representations, with the benefit of
+- 🔥 SongComposer composes melodies and lyrics with symbolic song representations, with the benefit of
 **better token efficiency**, **precise representation**, **flexible format**, and **human-readable output**.
-- 🔥  SongCompose-PT, a comprehensive pretraining dataset that includes lyrics, melodies, and
+- 🔥 SongCompose-PT, a comprehensive pretraining dataset that includes lyrics, melodies, and
 paired lyrics and melodies in either Chinese or English, will be released.
 - 🔥 SongComposer outperforms advanced LLMs like GPT-4 in tasks such as lyric-to-melody generation, melody-to-lyric generation, song continuation, and text-to-song creation.
 
 ## 👨‍💻 Todo
-- [ ] Code of SongComposer
+- [ ] Release of SongCompose-PT dataset
+- [ ] Online Demo of SongComposer
+- [x] Code of SongComposer
 - [x] Demo of SongComposer
 
 
 ## 🛠️ Usage
-Updating in progress...
+### Requirements
+
+- python 3.9 and above
+- pytorch 2.0 and above
+- CUDA 12.0 and above are recommended (this is for GPU users)
+
+
+### Installation
+
+Before running the code, make sure you have setup the environment and installed the required packages. Make sure you meet the above requirements, and then install the dependent libraries.
+Please refer to the installation section of [finetune scripts](finetune/README.md).
+
+### Quickstart
+
+We provide a simple example to show how to use SongComposer-SFT with 🤗 Transformers.
+
+<details>
+  <summary>
+    <b>🤗 Transformers</b>
+  </summary>
+
+```python
+from transformers import AutoTokenizer, AutoModelForCausalLM
+ckpt_path = "Mar2Ding/songcomposer_sft"
+tokenizer = AutoTokenizer.from_pretrained(ckpt_path, trust_remote_code=True)
+model = AutoModel.from_pretrained(ckpt_path, trust_remote_code=True).cuda().half()
+prompt = 'Create a song on brave and sacrificing with a rapid pace.'
+model.inference(prompt, tokenizer)
+```
+
+</details>
+
+
+### Finetune
+
+Please refer to our [finetune scripts](finetune/README.md).
+
+
+### Inference
+
+We have provide a notebook (`inference.ipynb`) for the inference stage.
 
 ##   ⭐ Samples
 Audio samples, including our SongComposer and other baselines, are available on our [Demo Page](https://pjlab-songcomposer.github.io). The samples span four tasks related to song generation, covering both English and Chinese.
