@@ -3,11 +3,10 @@ export CUDA_DEVICE_MAX_CONNECTIONS=1
 DIR=`pwd`
 
 # export MODEL="songcomposer_pretrain"
-# export MODEL="model name or path"
-export MODEL='/mnt/petrelfs/dingshuangrui/PuQu/output/internlm2_pretrain_slow'
+export MODEL="model name or path"
 # export DATA="sft_data.txt"
-# export DATA="path of data"
-export DATA="/mnt/petrelfs/dingshuangrui/MiniGPT-4/corpus/sft_data.json"
+export DATA="path of data"    
+
 
 GPUS_PER_NODE=8
 NNODES=1
