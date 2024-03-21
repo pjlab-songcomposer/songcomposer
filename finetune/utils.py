@@ -4,6 +4,20 @@ import numpy as np
 import json 
 import torch
 
+base_tones = {
+    'C' : 0, 'C#': 1, 'D' : 2, 'D#': 3,
+    'E' : 4, 'F' : 5, 'F#': 6, 'G' : 7,
+    
+    'G#': 8, 'A' : 9, 'A#':10, 'B' :11,
+}
+line_index = {
+    0: 'first', 1 : 'second', 2: 'third',
+    3 : 'fourth', 4 : 'fifth', 
+    5: 'sixth', 6 : 'seventh',
+    7: 'eighth', 8 : 'ninth', 9: 'tenth',
+}
+
+
 def log_discretize(x, bins=512):
     eps = 1
     x_min = np.log(eps-0.3)
