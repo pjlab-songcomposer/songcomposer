@@ -39,12 +39,7 @@ line_index = {
 
 @dataclass
 class ModelArguments:
-    model_name_or_path: Optional[str] = field(default="/mnt/petrelfs/share_data/dongxiaoyi/share_models/new7B_SFT")
-
-meta_instruction = """<|System|>:You are an AI assistant whose name is InternLM (书生·浦语).
-- InternLM (书生·浦语) is a conversational language model that is developed by Shanghai AI Laboratory (上海人工智能实验室). It is designed to be helpful, honest, and harmless.
-- InternLM (书生·浦语) can understand and communicate fluently in the language chosen by the user such as English and 中文.<eosys>
- """
+    model_name_or_path: Optional[str] = field(default="")
 
 @dataclass
 class DataArguments:
@@ -160,246 +155,6 @@ def safe_save_model_for_hf_trainer(trainer: transformers.Trainer, output_dir: st
         trainer._save(output_dir, state_dict=state_dict)
 
 
-def log_discretize(x, bins=512):
-    eps = 1
-    x_min = np.log(eps-0.3)
-    x_max = np.log(6+eps)
-    x = min(6, x)
-    x = max(-0.3, x)
-    x = np.log(x+eps)
-    x = (x-x_min) / (x_max-x_min) * (bins-1)
-    return np.round(x).astype(int)
-
-def reverse_log_float(x, bins=512):
-    if x == 79: #特判
-        return 0
-    eps = 1
-    x_min = np.log(eps-0.3)
-    x_max = np.log(6+eps)
-    x = x * (x_max - x_min)/(bins-1) + x_min
-    x = np.exp(x) - eps
-    return float("{:.3f}".format(x))
-
-def bin_time(list_d):
-    bin_list = []
-    # isinstance(notes_d, list):
-    # duration = list_string.split(' ')
-    for item in list_d:
-        if not isinstance(item, str):
-            item = str(item)
-        item_tuple = item.split(' ')
-        out = ''
-        for item_str in item_tuple:
-            item_num = float(item_str)
-            # out += f'<{item_num}>'
-            bin = log_discretize(item_num)
-            out += f'<{bin}>'
-        bin_list.append(out)
-    return bin_list
-
-
-def append_song_token(model, tokenizer, config):
-    old_token_len = len(tokenizer)
-    new_tokens = ['<bol>','<bom>','<bop>','<eol>','<eom>','<eop>']
-    for note in base_tones:
-        for i in range(-1, 10): # -1 -> 9
-            new_tokens.append(f'<{note}{i}>') 
-    for t_bin in range(512):
-        new_tokens.append(f'<{t_bin}>')
-    new_tokens = set(new_tokens) - set(tokenizer.get_vocab().keys())
-    new_tokens = list(new_tokens)
-    new_tokens.sort()
-    tokenizer.add_tokens(new_tokens)
-    new_token_len = len(tokenizer)
-    model.tokenizer = tokenizer
-
-    weight = nn.Parameter(torch.empty((new_token_len-old_token_len, config.hidden_size)))
-    nn.init.kaiming_uniform_(weight, a=math.sqrt(5))
-    model.config.vocab_size = new_token_len
-    model.output.weight.data = torch.cat([model.output.weight, weight.to(model.device)], dim=0)
-    model.output.weight.requires_grad = True
-
-    new_token_embed = torch.randn(new_token_len-old_token_len, config.hidden_size)
-    new_weight = torch.cat([model.model.tok_embeddings.weight, new_token_embed.to(model.device)], dim=0)
-    model.model.vocab_size = new_token_len
-    model.model.tok_embeddings.weight.data = new_weight
-    model.model.tok_embeddings.weight.requires_grad = True
-    
-    return model, tokenizer
-
-
-def generate_lyrics(raw_lyric):
-    ##################pure lyrics####################
-    line_tuple = []
-    line_list = []
-    for lyric in raw_lyric:
-        for l in lyric:
-            line_input = f'{l}'
-            line_tuple.append(line_input)
-        line_list.append('|'.join(line_tuple))
-        line_tuple = []
-    pure_lyric_input = ''
-    for i, item in enumerate(line_list):
-        pure_lyric_input += f" The {line_index[i]} line:" + line_list[i] + '\n'
-    ######todo: chinese and english
-    # pure_lyric_input = f'The following is pure lyrics. Total {i+1} lines.' + pure_lyric_input
-    pure_lyric_input = f'<sol> Total {i+1} lines.' + pure_lyric_input + '<eol>'
-    return pure_lyric_input + '[UNUSED_TOKEN_145]'
-
-def note_shift(note, shift_digit):
-    note_list = note.split(' ')
-    result_list = []
-    for note_single in note_list:
-        if '<' in note_single:
-            now = pretty_midi.note_name_to_number(note_single[1:-1]) + shift_digit
-        else:
-            now = pretty_midi.note_name_to_number(note_single) + shift_digit
-        result_list.append(f'<{pretty_midi.note_number_to_name(now)}>')
-    return ' '.join(result_list)
-
-def generate_melody(notes, notes_d, rest_d, shift_digit):
-    ##################pure melody####################
-    num_line = len(notes)
-    # pure_melody_input = f'The following is pure melody. Total {num_line} lines.'
-    pure_melody_input = f'<som> Total {num_line} lines.'
-    line_tuple = []
-    line_list = [] 
-    for note, note_d, r_d in zip(notes, notes_d, rest_d):
-        for n, n_d, r_d_ in zip(note, bin_time(note_d), bin_time(r_d)):
-            line_input = f'{note_shift(n, shift_digit-4)},{n_d},{r_d_}'
-            line_tuple.append(line_input)
-        line_list.append('|'.join(line_tuple))
-        line_tuple = []
-    for i, item in enumerate(line_list):
-        pure_melody_input += f" The {line_index[i]} line:" + line_list[i] + '\n'
-    return pure_melody_input + '<eom>' + '[UNUSED_TOKEN_145]'
-
-def generate_pair(lyrics, notes, notes_d, rest_d):    
-    ##################lyric-melody pair####################
-    # i_song = random.randint(0, self.num_song-1)
-    num_lyrics = len(lyrics)
-
-    line_list, lyric_list, melody_list = [], [], []
-    line_tuple, lyric_tuple, melody_tuple = [], [], []
-    lyric_input = f'<sol> Total {num_lyrics} lines.'
-    melody_input = f'<som> Total {num_lyrics} lines.'
-    # text_input = f'The following is lyric-melody pair. Total {num_lyrics} lines.'
-    text_input = ''
-    for lyric, note, note_d, r_d in zip(lyrics, notes, notes_d, rest_d):
-        for l, n, n_d, r_d_ in zip(lyric, note, bin_time(note_d), bin_time(r_d)):
-            line_input = f'{l},{n},{n_d},{r_d_}'
-            line_tuple.append(line_input)
-            lyric_tuple.append(f'{l}')
-            melody_tuple.append(f'{n},{n_d},{r_d_}')
-        line_list.append('|'.join(line_tuple))
-        lyric_list.append('|'.join(lyric_tuple))
-        melody_list.append('|'.join(melody_tuple))
-        line_tuple = []
-        lyric_tuple = []
-        melody_tuple = []
-
-    for i, item in enumerate(line_list):
-        text_input += f" The {line_index[i]} line:" + line_list[i] + '\n'
-        lyric_input += f" The {line_index[i]} line:" + lyric_list[i] + '\n'
-        melody_input += f" The {line_index[i]} line:" + melody_list[i] + '\n'
-    text_input = f'<sop> Total {i + 1} lines.' + text_input + '<eop>[UNUSED_TOKEN_145]'
-    return text_input
-
-
-
-class LazyPretrainDataset(Dataset):
-    """Dataset for supervised fine-tuning."""
-
-    def __init__(self, dataset_kind, use_meta=False, img_size=224):
-        super(LazySupervisedDataset, self).__init__()
-        self.pure_melody = {'notes': [], 'notes_duration': [], 'rest_duration': []}
-        path = f'/mnt/petrelfs/dingshuangrui/MiniGPT-4/corpus/segment/pure_melody_data_segment_{i}.json'
-        file = open(path, 'r', encoding='utf-8')
-        data = json.load(file)
-        self.pure_melody['notes'].extend(data['notes'])
-        self.pure_melody['notes_duration'].extend(data['notes_duration'])
-        self.pure_melody['rest_duration'].extend(data['rest_duration'])
-
-        self.pure_lyric = []
-        path = f'/mnt/petrelfs/dingshuangrui/MiniGPT-4/corpus/segment/pure_lyric_data_segment.json'
-        file = open(path, 'r', encoding='utf-8')
-        self.pure_lyric.extend(json.load(file))
-        
-        self.pair_data = {'lyrics': [], 'notes': [], 'notes_duration': [], 'rest_duration': []}
-        for i in range(3):
-            path = f'/mnt/petrelfs/dingshuangrui/MiniGPT-4/corpus/segment/pair_data_segment_{i}.json'
-            file = open(path, 'r', encoding='utf-8')
-            data = json.load(file)
-            self.pair_data['lyrics'].extend(data['lyrics'])
-            self.pair_data['notes'].extend(data['notes'])
-            self.pair_data['notes_duration'].extend(data['notes_duration'])
-            self.pair_data['rest_duration'].extend(data['rest_duration'])
-        
-        self.pure_melody['notes'].extend(self.pair_data['notes'])
-        self.pure_melody['notes_duration'].extend(self.pair_data['notes_duration'])
-        self.pure_melody['rest_duration'].extend(self.pair_data['rest_duration'])
-        self.pure_lyric.extend(self.pair_data['lyrics'])     
-        assert len(self.pure_melody['notes']) == len(self.pure_melody['notes_duration']) == len(self.pure_melody['rest_duration'])
-
-
-        if 'pair' in dataset_kind:   
-            self.count = len(self.pair_data['lyrics']) * 3
-            self.type = 'pair'
-        else:
-            self.count = len(self.pure_melody['notes']) * 9 + len(self.pure_lyric) 
-            self.type = 'pure'
-        self.use_meta = use_meta
-
-    def __len__(self):
-        return self.count
-        # return 100
-
-    def __getitem__(self, i):
-        if self.type == 'pair':
-            if i // len(self.pair_data['lyrics']) == 0:
-                lyrics = self.pair_data['lyrics'][i]
-                notes = self.pair_data['notes'][i]
-                notes_d = self.pair_data['notes_duration'][i]
-                rest_d = self.pair_data['rest_duration'][i]
-                conv_text = generate_pair(lyrics, notes, notes_d, rest_d)
-            elif i // len(self.pair_data['lyrics']) == 1:
-                i_ = i % len(self.pair_data['lyrics'])
-                step = len(self.pure_lyric) //  len(self.pair_data['lyrics'])
-                i__ = min(int(i_*step), len(self.pure_lyric)-1)
-                conv_text = generate_lyrics(self.pure_lyric[int(i__)])
-                # print(i__)
-            else:
-                i_ = i % len(self.pair_data['lyrics'])
-                step = len(self.pure_melody['notes']) //  len(self.pair_data['lyrics'])
-                i__ = min(int(i_*step), len(self.pure_melody['notes'])-1)
-                conv_text = generate_melody(self.pure_melody['notes'][i__],
-                                            self.pure_melody['notes_duration'][i__],
-                                            self.pure_melody['rest_duration'][i__],
-                                            4
-                                            )
-                
-        else:
-            if i < len(self.pure_lyric):
-                conv_text = generate_lyrics(self.pure_lyric[i])
-            else:
-                i_ = (i-len(self.pure_lyric)) // 9
-                shift = (i-len(self.pure_lyric)) % 9
-                conv_text = generate_melody(self.pure_melody['notes'][i_],
-                                            self.pure_melody['notes_duration'][i_],
-                                            self.pure_melody['rest_duration'][i_],
-                                            shift
-                                            )
-        sample = dict(
-            text_input = conv_text,
-        )
-        
-        sample['data_type'] = 'text'
-
-        return dict(
-            samples = sample
-        )
-
-
 def conv2text(sources, use_meta=False):
     END_HUMAN = "\n"
     END_BOT = "[UNUSED_TOKEN_0]\n"
@@ -431,32 +186,6 @@ class LazySftDataset(Dataset):
             samples = sample
         )
 
-def train_data(training_args, parser, model, tokenizer, data_type, is_save):
-    
-    parser = transformers.HfArgumentParser(
-        (ModelArguments, DataArguments, TrainingArguments, LoraArguments)
-    )
-    (
-        model_args,
-        data_args,
-        training_args,
-        lora_args,
-    ) = parser.parse_args_into_dataclasses()
-    data_module, len_dataset = make_supervised_data_module(
-        tokenizer=tokenizer, data_args=data_args, data_type=data_type,
-    )
-    # Start trainner
-    trainer = Trainer(
-        model = model,
-        tokenizer = tokenizer,
-        args = training_args,
-        **data_module
-    )
-    trainer.train()
-    trainer.save_state()
-    if is_save:
-        safe_save_model_for_hf_trainer(trainer=trainer, output_dir=training_args.output_dir, bias=lora_args.lora_bias)
-    return model
 
 @dataclass
 class DataCollatorForSupervisedDataset(object):
@@ -477,20 +206,14 @@ class DataCollatorForSupervisedDataset(object):
         )
 
 def make_supervised_data_module(
-    tokenizer: transformers.PreTrainedTokenizer, data_args, data_type='pair',
+    tokenizer: transformers.PreTrainedTokenizer, data_args,
 ) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
 
     rank0_print("Loading data...")
     
+    train_dataset = LazySftDataset(data_args.data_path)
 
-    
-    if data_type == 'sft':
-        train_dataset = LazySftDataset()
-    else:
-        # train_dataset = OnlypairDataset()
-        train_dataset = LazySupervisedDataset(data_type, data_args.use_meta, data_args.img_size)
- 
     eval_dataset = None
 
     data_collator = DataCollatorForSupervisedDataset()
@@ -498,6 +221,34 @@ def make_supervised_data_module(
                 eval_dataset=eval_dataset,
                 data_collator=data_collator,
                ), len(train_dataset)
+
+
+def train_data(training_args, parser, model, tokenizer, is_save):
+    
+    parser = transformers.HfArgumentParser(
+        (ModelArguments, DataArguments, TrainingArguments, LoraArguments)
+    )
+    (
+        model_args,
+        data_args,
+        training_args,
+        lora_args,
+    ) = parser.parse_args_into_dataclasses()
+    data_module, len_dataset = make_supervised_data_module(
+        tokenizer=tokenizer, data_args=data_args,
+    )
+    # Start trainner
+    trainer = Trainer(
+        model = model,
+        tokenizer = tokenizer,
+        args = training_args,
+        **data_module
+    )
+    trainer.train()
+    trainer.save_state()
+    if is_save:
+        safe_save_model_for_hf_trainer(trainer=trainer, output_dir=training_args.output_dir, bias=lora_args.lora_bias)
+    return model
 
 
 def train():
@@ -512,7 +263,6 @@ def train():
         training_args,
         lora_args,
     ) = parser.parse_args_into_dataclasses()
-    # import pdb; pdb.set_trace()
     rank0_print(training_args)
     
     #
@@ -571,14 +321,8 @@ def train():
     for name, param in model.named_parameters():
         rank0_print(name, param.requires_grad)
 
-    
-    # model, tokenizer = append_song_token(model, tokenizer, config)
     model.tokenizer = tokenizer
-    # model = train_data(training_args, parser, model, tokenizer, 'pure', False)
-    # model = train_data(training_args, parser, model, tokenizer, 'pair', True)
-    model = train_data(training_args, parser, model, tokenizer, 'sft', True)
-
-    
+    model = train_data(training_args, parser, model, tokenizer, True)
 
 if __name__ == "__main__":
     train()

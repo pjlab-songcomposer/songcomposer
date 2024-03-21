@@ -3,9 +3,11 @@ export CUDA_DEVICE_MAX_CONNECTIONS=1
 DIR=`pwd`
 
 # export MODEL="songcomposer_pretrain"
-export MODEL="model name or path"
+# export MODEL="model name or path"
+export MODEL='/mnt/petrelfs/dingshuangrui/PuQu/output/internlm2_pretrain_slow'
 # export DATA="sft_data.txt"
-export DATA="path of data"
+# export DATA="path of data"
+export DATA="/mnt/petrelfs/dingshuangrui/MiniGPT-4/corpus/sft_data.json"
 
 GPUS_PER_NODE=8
 NNODES=1
@@ -28,7 +30,7 @@ torchrun $DISTRIBUTED_ARGS finetune_song.py \
     --fix_vit True \
     --fix_sampler True \
     --output_dir output/internlm2_sft \
-    --num_train_epochs 3 \
+    --num_train_epochs 1 \
     --per_device_train_batch_size 4 \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps 16 \

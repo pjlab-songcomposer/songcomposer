@@ -19,13 +19,12 @@ pip3 install torch torchvision torchaudio
 **Step 3.** Install require packages
 
 ```bash
-pip install transformers==4.31.0 timm==0.6.13 sentencepiece==0.1.99 gradio==4.13.0 markdown2==2.4.10 xlsxwriter==3.1.2 einops
+pip install transformers==4.31.0 timm==0.6.13 sentencepiece==0.1.99 gradio==4.13.0 markdown2==2.4.10 xlsxwriter==3.1.2 einops pretty_midi
 ```
 
 **Step 4.** Install deepspeed for fine-tuning
 
 ```bash
-# install deepspeed
 pip install deepspeed
 ```
 
@@ -42,11 +41,11 @@ To prepare your finetuning data, you should (1) formulate each sample as a dicti
 \<bol\> stands for the **b**eginning **o**f the **l**yric. \<eol\> stands for the **e**nd **o**f the **l**yric.
 
 The conversation format would be:
+```
+[UNUSED_TOKEN_146]user\n{Question}[UNUSED_TOKEN_145]\n
 
-[UNUSED_TOKEN_146]user\n**Question**[UNUSED_TOKEN_145]\n
-
-[UNUSED_TOKEN_146]assistant\n**Answer**[UNUSED_TOKEN_145]\n
-
+[UNUSED_TOKEN_146]assistant\n{Answer}[UNUSED_TOKEN_145]\n
+```
 For the detailed construction of melody, text, melody-text pair please refer to our paper.
 
 <details>
