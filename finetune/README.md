@@ -1,4 +1,4 @@
-# SongComposercd  Finetuning
+# SongComposer  Finetuning
 
 We offer the official scripts for easy finetuning of the pretrained songcomposer model on downstream tasks. Our finetune scripts use DeepSpeed and FSDP by default.
 
