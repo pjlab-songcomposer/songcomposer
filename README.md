@@ -3,7 +3,7 @@ This repository is the official implementation of SongComposer.
 
 <!-- **[SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation](https://arxiv.org/abs/2402.17645)**
 </br> -->
-<p align="center" style="font-size: 1.5em; margin-top: -1em"> <a href="https://arxiv.org/abs/2402.17645"><b>SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation</b></a></p>
+<p align="center" style="font-size: 1.5em; margin-top: -1em"> <a href="https://arxiv.org/pdf/2402.17645"><b>SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation</b></a></p>
 <p align="center" style="font-size: 1.1em; margin-top: -1em">
 <a href="https://mark12ding.github.io/">Shuangrui Ding<sup>*1</sup></a>,  
 <a href="https://scholar.google.com/citations?user=iELd-Q0AAAAJ">Zihan Liu<sup>*2,3</sup></a>,  
