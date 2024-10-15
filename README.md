@@ -18,7 +18,7 @@ This repository is the official implementation of SongComposer.
 <p align="center" style="font-size: 1em; margin-top: -1em"> <sup>*</sup>  Equal Contribution. <sup>&dagger;</sup>Corresponding authors. </p>
 
 <p align="center" style="font-size: em; margin-top: 0.5em">
-<a href="https://arxiv.org/abs/2402.17645"><img src="https://img.shields.io/badge/arXiv-<color>"></a>
+<a href="https://arxiv.org/pdf/2402.17645"><img src="https://img.shields.io/badge/arXiv-<color>"></a>
 <a href="https://github.com/pjlab-songcomposer/songcomposer"><img src="https://img.shields.io/badge/Code-red"></a>
 <a href="https://pjlab-songcomposer.github.io"><img src="https://img.shields.io/badge/Demo-yellow"></a>
 </p>
@@ -33,7 +33,7 @@ This repository is the official implementation of SongComposer.
 
 🚀 [2023/3/21] The finetune code of [SongComposer](https://github.com/pjlab-songcomposer/songcomposer/tree/main/finetune) are publicly available and the weights of [SongComposer_pretrain](https://huggingface.co/Mar2Ding/songcomposer_pretrain) and [SongComposer_sft](https://huggingface.co/Mar2Ding/songcomposer_sft) are publicly available on Hugging Face🤗.
 
-🚀 [2023/2/28] The [paper](https://arxiv.org/abs/2402.17645) and [demo page](https://pjlab-songcomposer.github.io) are released!
+🚀 [2023/2/28] The [paper](https://arxiv.org/pdf/2402.17645) and [demo page](https://pjlab-songcomposer.github.io) are released!
 
 ## 💡 Highlights
 - 🔥 SongComposer composes melodies and lyrics with symbolic song representations, with the benefit of
