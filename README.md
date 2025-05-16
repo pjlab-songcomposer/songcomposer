@@ -31,11 +31,11 @@ This repository is the official implementation of SongComposer.
 ## 📜 News
 🎉 [2025/5/16] SongComposer is accepted by ACL 2025 main! We will soon release the data and checkpoints.
 
-🚀 [2023/6/12] We enhanced SongComposer to a whole-song level and the [demo page](https://pjlab-songcomposer.github.io) is updated!
+🚀 [2024/6/12] We enhanced SongComposer to a whole-song level and the [demo page](https://pjlab-songcomposer.github.io) is updated!
 
-🚀 [2023/3/21] The finetune code of [SongComposer](https://github.com/pjlab-songcomposer/songcomposer/tree/main/finetune) are publicly available and the weights of [SongComposer_pretrain](https://huggingface.co/Mar2Ding/songcomposer_pretrain) and [SongComposer_sft](https://huggingface.co/Mar2Ding/songcomposer_sft) are publicly available on Hugging Face🤗.
+🚀 [2024/3/21] The finetune code of [SongComposer](https://github.com/pjlab-songcomposer/songcomposer/tree/main/finetune) are publicly available and the weights of [SongComposer_pretrain](https://huggingface.co/Mar2Ding/songcomposer_pretrain) and [SongComposer_sft](https://huggingface.co/Mar2Ding/songcomposer_sft) are publicly available on Hugging Face🤗.
 
-🚀 [2023/2/28] The [paper](https://arxiv.org/pdf/2402.17645) and [demo page](https://pjlab-songcomposer.github.io) are released!
+🚀 [2024/2/28] The [paper](https://arxiv.org/pdf/2402.17645) and [demo page](https://pjlab-songcomposer.github.io) are released!
 
 ## 💡 Highlights
 - 🔥 SongComposer composes melodies and lyrics with symbolic song representations, with the benefit of
