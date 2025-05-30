@@ -1,7 +1,7 @@
 # <img src="img/logo.png" style="vertical-align: -10px;" :height="40px" width="40px"> SongComposer
 This repository is the official implementation of SongComposer.
 
-<!-- **[SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation](https://arxiv.org/abs/2402.17645)**
+<!-- **[SongComposer: A Large Language Model for Lyric and Melody Generation in Song Composition](https://arxiv.org/abs/2402.17645)**
 </br> -->
 <p align="center" style="font-size: 1.5em; margin-top: -1em"> <a href="https://arxiv.org/pdf/2402.17645"><b>SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation</b></a></p>
 <p align="center" style="font-size: 1.1em; margin-top: -1em">
@@ -103,8 +103,8 @@ Audio samples, including our SongComposer and other baselines, are available on 
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
 ```bibtex
 @misc{ding2024songcomposer,
-      title={SongComposer: A Large Language Model for Lyric and Melody Composition in Song Generation}, 
-      author={Shuangrui Ding and Zihan Liu and Xiaoyi Dong and Pan Zhang and Rui Qian and Conghui He and Dahua Lin and Jiaqi Wang},
+      title={SongComposer: A Large Language Model for Lyric and Melody Generation in Song Composition}, 
+      author={Shuangrui Ding and Zihan Liu and Xiaoyi Dong and Pan Zhang and Rui Qian and Junhao Huang and Conghui He and Dahua Lin and Jiaqi Wang},
       year={2024},
       eprint={2402.17645},
       archivePrefix={arXiv},
