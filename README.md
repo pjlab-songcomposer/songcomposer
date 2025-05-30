@@ -29,7 +29,9 @@ This repository is the official implementation of SongComposer.
   width: 100%;" />
 
 ## 📜 News
-🎉 [2025/5/16] SongComposer is accepted by ACL 2025 main! We will soon release the data and checkpoints.
+🚀 [2025/5/31] We release the SongCompose data [link](https://huggingface.co/Mar2Ding/songcomposer_sft) on Hugging Face🤗.
+
+🎉 [2025/5/16] SongComposer is accepted by ACL 2025 main!
 
 🚀 [2024/6/12] We enhanced SongComposer to a whole-song level and the [demo page](https://pjlab-songcomposer.github.io) is updated!
 
@@ -43,12 +45,6 @@ This repository is the official implementation of SongComposer.
 - 🔥 SongCompose-PT, a comprehensive pretraining dataset that includes lyrics, melodies, and
 paired lyrics and melodies in either Chinese or English, will be released.
 - 🔥 SongComposer outperforms advanced LLMs like GPT-4 in tasks such as lyric-to-melody generation, melody-to-lyric generation, song continuation, and text-to-song creation.
-
-## 👨‍💻 Todo
-- [ ] Release of SongCompose-PT dataset
-- [ ] Online Demo of SongComposer
-- [x] Code of SongComposer
-- [x] Demo of SongComposer
 
 
 ## 🛠️ Usage
