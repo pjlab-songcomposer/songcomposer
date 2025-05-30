@@ -21,6 +21,7 @@ This repository is the official implementation of SongComposer.
 <a href="https://arxiv.org/pdf/2402.17645"><img src="https://img.shields.io/badge/arXiv-<color>"></a>
 <a href="https://github.com/pjlab-songcomposer/songcomposer"><img src="https://img.shields.io/badge/Code-red"></a>
 <a href="https://pjlab-songcomposer.github.io"><img src="https://img.shields.io/badge/Demo-yellow"></a>
+<a href="https://huggingface.co/datasets/Mar2Ding/songcompose_data"><img src="https://img.shields.io/badge/HFdata🤗-<color>"></a>
 </p>
 
 <img align="center" src="img/framework.png" style="  display: block;
@@ -29,7 +30,7 @@ This repository is the official implementation of SongComposer.
   width: 100%;" />
 
 ## 📜 News
-🚀 [2025/5/31] We release the SongCompose data [link](https://huggingface.co/Mar2Ding/songcomposer_sft) on Hugging Face🤗.
+🚀 [2025/5/31] We release the SongCompose data [link](https://huggingface.co/datasets/Mar2Ding/songcompose_data) on Hugging Face🤗. 
 
 🎉 [2025/5/16] SongComposer is accepted by ACL 2025 main!
 
